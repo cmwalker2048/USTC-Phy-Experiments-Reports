@@ -1,0 +1,148 @@
+\documentclass[a4paper,UTF8]{ctexart}
+
+\usepackage{amsmath, amsthm, amssymb, amsfonts, hyperref, mathrsfs}%美国数学学会的包+?
+\usepackage{geometry} %控制界面
+\usepackage{bookmark}
+\usepackage{fancyhdr} % header & footer
+\usepackage{appendix} % 附录
+\usepackage{tikz} %作图
+\usepackage{graphicx} %插入图片的宏包
+\usepackage{float} %设置图片浮动位置的宏包
+%\usepackage{subfigure} %插入多图时用子图显示的宏包
+\usepackage{listings} %引用代码
+\usepackage{physics,mathtools} %物理数学工具
+\usepackage{comment}
+\usepackage{framed}
+\usepackage{caption}
+\usepackage{subcaption}
+\geometry{top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm} % 布局要求
+\pagestyle{fancy} % fancy分格
+\fancyhf{} % 清除所有页眉页脚
+\renewcommand\headrulewidth{0.6pt}
+\renewcommand\footrulewidth{0.6pt}
+% font
+\setCJKmainfont{Noto Serif CJK SC}[BoldFont={Noto Serif CJK SC Bold}, ItalicFont=]
+\lhead{何金铭 PB21020660$\mid$座位号:8}
+\cfoot{Quantum Key Distribution 实验报告}
+\rhead{\thepage}
+\lfoot{2024.4.23}
+\rfoot{USTC}
+%\bibliographystyle{plain} % 引用样式
+\everymath{\displaystyle} % display
+%============================================================
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Large Quantum Key Distribution 实验报告}
+    \par \text{\large 何金铭 PB21020660}
+\end{center}
+
+实验目的，实验原理，实验内容已于预习报告中给出，这里不再赘述。
+
+\section{实验结果与分析}
+
+\subsection{基矢对比}
+
+在完成：
+
+\begin{enumerate}
+    \item 同步设置
+    \item 利用MPC进行偏振调节
+\end{enumerate}
+
+等操作后，我们进行基矢对比得错误率为$4\%$，小于错误率要求$5\%$
+
+\subsection{量子密钥应用演示}
+
+\subsubsection{聊天加密}
+
+Bob传输一串字母"Hello! How are you? Nice to meet you!"，在接收端ALice解密后得到原文；若不解密，则接受到的是乱码。
+
+\subsubsection{图片加密}
+
+Bob传输一张图片，在接收端Alice解密后得到原图；若不解密，则接受到的是带有很多噪声的图片。
+
+\section{实验结论}
+
+\begin{enumerate}
+    \item 同步对于实验结果的影响很大，若未同步，则会使得光子计数率低，导致错误率高，几乎不能通信；
+    \item 通过了这个实验，我们了解了QKD的基本工作原理，并且利用了QKD进行了几个简单的加密通信；
+\end{enumerate}
+
+\section{思考题}
+
+\subsection{量子保密通信为什么是无条件安全的，其物理基础是什么？}
+
+其物理基础是量子态不可克隆定理，即未知量子态不能精确克隆（对任意输入态）。
+
+\subsection{量子不可克隆定理是什么？}
+
+未知量子态不能精确克隆（对任意输入态）
+
+下面证明这个定理：
+
+$|\phi\rangle$ 和 $|\psi\rangle$ 是两个任意的量子状态，我们要把这两个状态拷贝到另一个与他们完全无关的状态$|k\rangle$上。我
+们用一个幺正算符$U$来描述这个过程。则这个拷贝算符必须具备以下性质：
+$$\begin{array}{l}U(|\phi\rangle\otimes|k\rangle)=|\phi\rangle\otimes|\phi\rangle\\U(|\psi\rangle\otimes|k\rangle)=|\psi\rangle\otimes|\psi\rangle\end{array}$$
+内积$\langle U(\phi\otimes k)|U(\psi\otimes k)\rangle$可得出以下两个等式：
+$$\begin{array}{l}\langle U(\phi\otimes k)|U(\psi\otimes k)\rangle=\langle\phi\otimes\phi|\psi\otimes\psi\rangle\\\langle U(\phi\otimes k)|U(\psi\otimes k)\rangle=\langle\phi\otimes k|\psi\otimes k\rangle\end{array}$$
+这样便得到了：
+$$\begin{aligned}&\langle\phi\otimes\phi|\psi\otimes\psi\rangle=\langle\phi\otimes k|\psi\otimes k\rangle,\\&\to\\&\langle\phi|\psi\rangle\langle\phi|\psi\rangle=\langle\phi|\psi\rangle\langle k|k\rangle\:.\end{aligned}$$
+因为$\langle k|k\rangle=1$,所以得出
+$$\langle\phi|\psi\rangle^{2}=\langle\phi|\psi\rangle.$$
+
+这个等式仅有的两个解是$\langle\phi|\psi\rangle=0$ 和 $\langle\phi|\psi\rangle=1$。这意味着，要么$\phi=\psi$ (当$\langle\phi|\psi\rangle=1$),要么 $\phi$ 与$\psi$ 正交 (当$\langle\phi|\psi\rangle=0$)。只能
+够克降相同或正交的状态，这并不是我们最初假设的任意状态的完全克隆，不可克隆原理证明完毕。
+
+\subsection{实验中所使用的光源是单光子源还是其它什么光源？}
+
+实际情况中，我们不使用单光子源，而是使用弱相干光源，因为：
+
+\begin{enumerate}
+    \item 单光子源实现较困难；
+    \item 信道损耗大；
+\end{enumerate}
+
+\subsection{使用非单光子源可能会有什么问题，有没有办法消除？（调研，选做）}
+
+解决方法: Decoy State (诱骗态方案)
+
+由于Eve只分裂发送多光子脉冲，分裂导致多光子脉冲的损耗特
+性发生改变，一般表现为损耗降低；
+原因：Eve为了保证多光子脉冲尽可能的被Bob接受到，从而让
+Bob以为是有用传输，用以生成密钥，这样Eve等AB公开测量基
+信息后就可以提取密钥；
+我们可以发送一个主要以多光子脉冲分布的光场，如果Eve用这
+种方式攻击，则我们会看到多光子脉冲的损耗会降低！从而探测
+到Eve的存在；
+
+Decoy State QKD 协议如下：
+
+\begin{enumerate}
+    \item Alice 随机发送信号态或诱骗态给Bob；
+    \item  Bob公开每一次发送信号时候接收到；
+    \item Alice公开说明具体每一次发送的是信号态还是诱骗态；
+    \item Alice 和 Bob 计算信号态和诱骗态各自传输成功的概率；
+如果Eve只选择的发送两光子态，则A、B会发现诱骗态B)
+的接受成功概率非常高，从而确认Eve的存在；没有Eve时
+，获取密钥的方法如BB84同。
+\end{enumerate}
+
+\subsection{如何降低实验中的错误率？}
+
+\begin{enumerate}
+    \item 提升激光器的单光子性
+    \item 降低光纤中的光子损耗
+    \item 提高单光子探测器的探测效率
+    \item 提升偏振度的对比度
+\end{enumerate}
+
+\subsection{请说说实验中调节MPC起到的作用是什么，如何判断调节好了，为什么这样判断？}
+
+作用为调节光子的偏振态$\ket{H},\ket{V},\ket{+},\ket{-}$
+
+判断的标准是偏振对比度$\ket{H}:\ket{V}, \ket{+}:\ket{-}$大于20:1或小于1:20，因为说明两者强度比很大，可近似为理想线性偏
+振光了。
+
+\end{document}
