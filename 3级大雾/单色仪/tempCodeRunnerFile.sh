@@ -1,0 +1,1 @@
+plot "./data/neo/div1.txt" with linespoints

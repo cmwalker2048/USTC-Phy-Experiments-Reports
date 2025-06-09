@@ -1,0 +1,565 @@
+\documentclass[a4paper,UTF8]{ctexart}
+\usepackage{threeparttable}%画图时候的脚注
+\usepackage{amsmath, amsthm, amssymb, amsfonts, hyperref, mathrsfs}%美国数学学会的包+?
+\usepackage{geometry} %控制界面
+\usepackage{bookmark}
+\usepackage{fancyhdr} % header & footer
+\usepackage{tikz} %作图
+\usepackage{graphicx} %插入图片的宏包
+\usepackage{float} %设置图片浮动位置的宏包
+\usepackage{subfigure} %插入多图时用子图显示的宏包
+\usepackage{listings} %引用代码
+\usepackage{physics,mathtools} %物理数学工具
+\usepackage{fancyhdr}%页眉和页脚
+\geometry{top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm} % 布局要求
+\pagestyle{plain} % 角标要求
+% code
+\lstset{
+    basicstyle          =   \sffamily,          % 基本代码风格
+    keywordstyle        =   \bfseries,          % 关键字风格
+    commentstyle        =   \rmfamily\itshape,  % 注释的风格，斜体
+    stringstyle         =   \ttfamily,  % 字符串风格
+    flexiblecolumns,                % 别问为什么，加上这个
+    numbers             =   left,   % 行号的位置在左边
+    showspaces          =   false,  % 是否显示空格，显示了有点乱，所以不现实了
+    numberstyle         =   \zihao{-5}\ttfamily,    % 行号的样式，小五号，tt等宽字体
+    showstringspaces    =   false,
+    captionpos          =   t,      % 这段代码的名字所呈现的位置，t指的是top上面
+    frame               =   lrtb,   % 显示边框
+}
+
+\pagestyle{fancy}
+\lhead{\small 大学物理综合实验A}
+\chead{}
+\rhead{\small PB21000085 王潇羽}
+\lfoot{}
+\cfoot{第\thepage 页，共\pageref*{lastpage} 页}
+\rfoot{}
+
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge 传感器系列实验}
+\end{center}
+
+\section{实验目的}
+    通过电阻应变片传感器与压力传感器，让学生明白传感器的基本知识。通过搭建单桥，半桥，全桥电路，
+让学生明白微小量的测量方法。并且，通过后续的数据处理，让学生学会传感器精确度的测量与运用软件拟合的方法
+
+\section{实验原理}
+    \subsection*{电阻应变片传感器}
+    一根金属导线在其拉长时电阻增大，在其受压
+时电阻减小，这个规律被称为金属材料得电阻应变
+效应.设有一段长为$l$,截面积为$A$,电阻率为$\rho$
+的固态导体,它具有的电阻为：
+\begin{equation}
+    R = \rho \frac{l}{A} \label{eqs:1}    
+\end{equation}
+当它受到轴向力$F$而被拉伸(或压缩)时,其$l,A,\rho$
+均发生改变(式(\ref*{fig:1})所示),因而导体的电阻
+也随之发生变化。
+\begin{figure}[!hp]
+    \centering
+    \includegraphics[scale=0.9]{fig/范例图片/传感器_拉伸.jpg}
+    \caption{导体拉伸后的参数变化}
+    \label{fig:1}
+\end{figure}
+
+对式(\ref*{eqs:1})两边取对数后再微分，即可求得其电阻的相对
+变化：
+\begin{equation}
+    \frac{dR}{R}=\frac{dl}{l}-\frac{dA}{A}+\frac{d\rho}{\rho}
+    \label{eqs:2}
+\end{equation}
+式中，$(dl/l=\epsilon)$为材料的轴向应变，常用单位
+$\mu\epsilon(1\mu\epsilon=1*10^{-6})$;而$\frac{dA}{A}
+=2\frac{dr}{r}=-2\mu\epsilon$。其中，$r$为导体半径，受拉时$r$
+缩小;$\mu$为导体的材料的泊松比。代入式(\ref*{eqs:2})可得:
+\begin{equation}
+    \frac{dR}{R}=(1+2\mu)\varepsilon+\frac{d\rho}{\rho}
+    \label{eqs:3}
+\end{equation}
+上式中电阻率相对变化与导体材料的应变线性相关，因此导体材料的应变电阻
+效应为：
+\begin{equation}
+    \frac{\Delta R}{R}=K\cdot\varepsilon
+    \label{eqs:4}
+\end{equation}
+式中，$K$为应变片灵敏系数
+\newpage
+    电阻应变片把机械应变信号转换为$\frac{\delta R}{R}$后，由于应变量
+及其应变电阻变化一般都很微小，需要测量电路将应变计的$\frac{\delta R}{R}$
+变化转换成可用的电压或电路输出。直流电桥电路时常用的测量电路中的一种，
+如图(\ref*{fig:2})所示。
+\begin{figure}[!hp]
+    \centering
+    \includegraphics[scale=0.9]{fig/范例图片/传感器_单桥_半桥_全桥.jpg}
+    \caption{直流电路电桥示意图}
+    \label{fig:2}
+\end{figure}
+
+    图(\ref*{fig:2})$(a)$为单臂电桥电路，$R_1$为电阻应变片，其中三个桥臂连接
+固定电阻$R_2,R_3和R_4$。当$R_1$未受力，电桥达到初始平衡时，但不代表电压表无示数，
+有$\frac{R_1}{R_2}=\frac{R_3}{R_4}$,输出电压$U_a=0$。当应变片$R_1$受应变引起
+$\delta R$电阻时，电压示数发生变化。此时，电桥输出电压$U_a$在满足$\Delta R\leq R_1$
+且$\frac{R_1}{R_2}=\frac{R_3}{R_4}$的条件下为：
+\begin{equation}
+    U_0=\frac{1}{4}\frac{\Delta R}{R}U
+    \label{eqs:5}
+\end{equation}
+电桥的灵敏度为：
+\begin{equation}
+    S=\frac{1}{4}U
+    \label{eqs:6}
+\end{equation}
+与上讨论同理，可以得到式(\ref*{fig:2})$(b)$为半桥电路，输出电压和电桥的灵敏度分别为
+\begin{equation}
+    U_0=\frac{1}{2}\frac{\Delta R}{R}U
+    \label{eqs:7}    
+\end{equation}
+\begin{equation}
+    S=\frac{1}{2}U
+    \label{eqs:8}
+\end{equation}
+式(\ref*{fig:2})$(c)$为全桥电路，输出电压和电桥的灵敏度分别为
+\begin{equation}
+    U_0=\frac{\Delta R}{R}U
+    \label{eqs:9}    
+\end{equation}
+\begin{equation}
+    S=U
+    \label{eqs:10}
+\end{equation}
+
+    \subsection*{压阻传感器}
+半导体单晶硅，锗等材料在外力作用下的电阻率将发生变化
+这种现象称为压阻效应。利用压阻效应开发的传感器称为压
+阻式传感器。它有两种类型：一是利用半导体材料的体电阻
+，制作半导体应变计；其灵敏度要比金属应变计高2个数量级
+;另一个是在半导体单晶硅(锗)的基底上利用半导体集成工艺
+中的扩散技术，将弹性敏感元件与应变(转换)元件合二为一，
+制成扩散硅压阻式传感器。固体材料的压阻效应可以表示为：
+\begin{equation}
+    \frac{\Delta R}{R} \approx \frac{\Delta\rho}{\rho}=K\sigma
+    \label{eqs:11}
+\end{equation}
+式中，压阻系数K是表征固体材料压阻效应的特性参数，
+$\sigma$是材料所承受的应力
+
+    扩散硅压阻式传感器是将电阻条集成在单晶硅膜片上，
+制成硅压阻芯片，并将此芯片的周边固定封装于外壳之内，
+引出电极引线(式(\ref*{fig:3})所示)。硅膜上受到均布
+压力$P$产生的应力是不均匀的，且有正应力区和负应力区。
+利用这一特性，选择适当位置布置电阻，两条受拉应力的
+电阻与另两条受压应力的电阻接入电桥的四臂构成差动全桥
+电路，就可得到正比于力变化的电信号输出(式(\ref*{fig:4})所示)，
+这样既提高了输出灵敏度，又起到热补偿作用。
+\begin{figure}[!hp]
+    \centering
+    \begin{minipage}{200pt}
+        \centering
+        \includegraphics[scale=1.2]{fig/范例图片/压阻传感器结构.jpg}
+        \caption{压阻传感器结构}
+        \label{fig:3}
+    \end{minipage}
+    \begin{minipage}{200pt}
+        \centering
+        \includegraphics[scale=1.2]{fig/范例图片/全桥测量电路.jpg}
+        \caption{全桥测量电路}
+        \label{fig:4}
+    \end{minipage}
+\end{figure}
+
+    在恒压源供电时，当应变膜无形变时，四个应变电阻阻值相等，桥路两端输
+出电压$U_0=0$。当气体进入压力强并作用于硅应变膜上时，应变膜弯曲形变，
+从而使其应变电阻值发生变化。通过合理设计，可以使应变膜受到应力作用时， 
+$R_1,R_4$与$R_2,R_3$有相反等量变化，电桥的输出电压可以表示为：
+\begin{equation}
+    U_0=\frac{\Delta R}{R}U
+    \label{eqs:12}
+\end{equation}
+由式(\ref*{eqs:12})可见，电桥输出电压与电阻变化成正比，与电源电压成正比。
+
+\section{数据处理}
+{\centering\subsection*{电阻应变片传感器}}
+\subsection*{应变力压力特性研究}
+    认为压力片电阻比未受力时变大时，是应变片收到拉伸，反之，是受到
+压缩力的作用，有实验数据如表(\ref*{table:1})，其中$R_1,R_2,R_3,R_4$,与
+图(\ref*{fig:5})相同。
+
+\begin{table}[!hp]
+    \begin{minipage}{200pt}
+        \centering
+        \includegraphics[scale=1]{fig/范例图片/传感器位置.jpg}
+        \caption{应力片传感位置}
+        \label{fig:5}
+    \end{minipage}
+    \begin{minipage}{200pt}
+        \vspace{20pt}
+        \begin{center}
+            \begin{tabular}{|c|c|c|c|c|}
+                \hline
+                1 & $R_1$ & $R_2$ & $R_3$ & $R_4$\\
+                \hline 
+                原电阻 & 1.0009 & 1.0012 & 0.9998 & 1.0015\\
+                \hline
+                受力后电阻 & 1.0013 & 1.0006 & 0.9994 & 1.0018\\
+                \hline
+            \end{tabular}
+            %怎么把标题居中啊，不会
+            \caption{应变力受力电阻变化特性}
+            \label{table:1}
+        \end{center}
+    \end{minipage}        
+\end{table}
+那么，由表中数据，易得到$R_1:$压缩力,$R_2:$拉伸力,$R_3:$拉伸力,$R_4:$压缩力
+\subsection*{三种特性的输出特性研究}
+\subsubsection*{单桥电路}
+    通过电桥平衡，依次增加砝码$m$,可测得单臂电桥的输出电压和砝码数量的关系，
+如图(\ref*{table:2})所示。
+\begin{table}[!hp]
+    \begin{center}
+        \begin{threeparttable}
+            \caption{单桥电路电压-砝码数关系数据表}
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+                \hline
+                n\tnote{1}(砝码数) & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 未知砝码\tnote{2}\\
+                \hline
+                U (电压) & 4.69 & 4.98 & 5.26 & 5.54 & 5.82 & 6.11 & 6.39 & 6.08\\
+                \hline
+            \end{tabular}
+            \label{table:2}
+            \begin{tablenotes}
+                \footnotesize
+                \item[1] $m_{砝码}=50kg$
+                \item[2] 没有标注的砝码，要求用拟合曲线得出质量
+            \end{tablenotes}
+        \end{threeparttable}
+    \end{center}
+\end{table}
+
+    可以通过origin拟合得到如下图表，曲线如图(\ref*{fig:6})所示
+
+\begin{figure}[!hp]
+    \vspace{-10pt}
+    \begin{minipage}{0.65\linewidth}
+        \centering
+        \includegraphics[scale=0.5]{fig/单桥电路u-n关系.jpg}   
+        \label{fig:6}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\linewidth}
+        \begin{center}
+            \begin{tabular}{c|c}
+                \hline
+                Model & Line\\
+                \hline
+                Equation & $y=A+B*x$\\
+                \hline
+                A(Intercept) & 4.69286\\
+                \hline
+                B(Slape) & 0.28286\\
+                \hline
+                R-Square & 0.9997\\
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+    \caption{单桥电电压-砝码数量关系图}
+\end{figure}
+
+并即得到拟合电压-砝码数关系式
+\begin{equation*}
+    U = U_0+\frac{\Delta U}{\Delta n}n
+\end{equation*}
+并将未知砝码代入拟合式，得到$m_{unknown}=245.2kg$,
+灵敏度$\frac{\Delta U}{\Delta n}=B=0.28286$。
+\newpage
+\subsubsection*{半桥电路}
+    与全桥电路类似，实验测得输出电压与砝码数量的关系，
+如表(\ref*{table:3})所示。
+
+\begin{table}[!hp]
+    \begin{center}
+        \begin{threeparttable}
+            \caption{半桥电路电压-砝码数关系数据表}
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+                \hline
+                n\tnote{1}(砝码数) & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 未知砝码\tnote{2}\\
+                \hline
+                U (电压) & 2.06 & 2.68 & 3.32 & 3.95 & 4.56 & 5.18 & 5.79 & 5.2\\
+                \hline
+            \end{tabular}
+            \label{table:3}
+            \begin{tablenotes}
+                \footnotesize
+                \item[1] $m_{砝码}=50kg$
+                \item[2] 没有标注的砝码，要求用拟合曲线得出质量
+            \end{tablenotes}
+        \end{threeparttable}
+    \end{center}
+\end{table}
+利用origin作图得到电压与砝码数的关系，曲线如图(\ref*{fig:7})所示。
+将未知砝码代入拟合式，得到$m_{unknown}=251.7kg$,
+灵敏度$\frac{\Delta U}{\Delta n}=B=0.6225$。
+\begin{figure}[!hp]
+    \begin{minipage}{0.65\linewidth}
+        \centering
+        \includegraphics[scale=0.5]{fig/半桥电路u-n关系.jpg}
+        \label{fig:7}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\linewidth}
+        \begin{center}
+            \begin{tabular}{c|c}
+                \hline
+                Model & Line\\
+                \hline
+                Equation & $y=A+B*x$\\
+                \hline
+                A(Intercept) & 2.06679\\
+                \hline
+                B(Slape) & 0.6225\\
+                \hline
+                R-Square & 0.9999\\
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+    \caption{半桥电路电压-砝码数量关系图}
+\end{figure}
+
+\subsubsection*{全桥电路}
+与上面两个同理，都是利用实验数据，得到电压与砝码数目的
+关系，再利用origin作图得到，附上实验结果与数据处理，
+不再赘述
+\begin{table}[!hp]
+    \begin{center}
+        \begin{threeparttable}
+            \caption{半桥电路电压-砝码数关系数据表}
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+                \hline
+                n\tnote{1}(砝码数) & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 未知砝码\tnote{2}\\
+                \hline
+                U (电压) & 3.78 & 5.05 & 6.31 & 7.58 & 8.84 & 10.11 & 11.38 & 10.12\\
+                \hline
+            \end{tabular}
+            \label{table:3}
+            \begin{tablenotes}
+                \footnotesize
+                \item[1] $m_{砝码}=50kg$
+                \item[2] 没有标注的砝码，要求用拟合曲线得出质量
+            \end{tablenotes}
+        \end{threeparttable}
+    \end{center}
+\end{table}
+
+{\centering\subsection*{压阻传感器}}
+
+\subsection*{检测电子元件}
+    电路一切正常，测得二极管导通电压$U_{diode}=0.6059V$
+三极管导通电压$U_{EB}=1.0443V,U_{BC}=1.0438V$
+\subsection*{压阻传感器输出特性}
+    通过搭建装置图(\ref*{fig:8}),测量得到传感器输出电压U与
+正压力P关系，分别就充气与放气测得两组数据，如表(\ref*{table:4}),
+和表(\ref*{table:5})所示。
+\begin{figure}[!hp]
+    \centering
+    \includegraphics[scale=1.2]{fig/范例图片/传感器_U_P关系图.jpg}
+    \caption{压力传感器输出特性测量}
+    \label{fig:8}
+\end{figure}
+\begin{table}[!hp]
+    \begin{center}
+        \begin{threeparttable}
+            \caption{U-P关系图(充气)}
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+                \hline
+                $U(V)$&0.246&0.500&0.596&0.672&0.752&1.022&1.24&1.464&1.64&1.911&2.083&2.37&2.49\\
+                \hline
+                $P_{extra}$\tnote{*}(MPa) &0&0.004&0.006&0.008&0.010&0.016&0.020&0.026&0.030&0.036&0.040&0.046&0.050\\
+                \hline
+            \end{tabular}
+            \label{table:4}
+            \begin{tablenotes}
+                \footnotesize
+                \item[*] 和外界环境的压力差
+            \end{tablenotes}
+        \end{threeparttable}
+    \end{center}
+\end{table}
+\begin{table}[!hp]
+    \begin{center}
+        \begin{threeparttable}
+            \caption{U-P关系图(放气)}
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+                \hline
+                $U(V)$&2.103&1.971&1.818&1.637&1.502&1.440&1.186&1.113&0.957&0.763&0.685&0.59\\
+                \hline
+                $P_{extra}$\tnote{*}(MPa) &0.040&0.038&0.034&0.030&0.028&0.026&0.020&0.018&0.016&0.010&0.008&0.006\\
+                \hline
+            \end{tabular}
+            \label{table:5}
+            \begin{tablenotes}
+                \footnotesize
+                \item[*] 和外界环境的压力差
+            \end{tablenotes}
+        \end{threeparttable}
+    \end{center}
+\end{table}
+\newpage
+当为冲气的时候，利用origin做图(\ref*{fig:9})，并求得灵敏度
+$S_{inflation}=\frac{\Delta U}{\Delta P}=B=44.85(V/MPa)$
+\begin{figure}[!hp]
+    \vspace{-10pt}
+    \begin{minipage}{0.65\linewidth}
+        \centering
+        \includegraphics[scale=0.5]{fig/U-P充气.jpg}   
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\linewidth}
+        \begin{center}
+            \begin{tabular}{c|c}
+                \hline
+                Model & Line\\
+                \hline
+                Equation & $y=A+B*x$\\
+                \hline
+                A(Intercept) & 0.3036\\
+                \hline
+                B(Slape) & 44.8461\\
+                \hline
+                R-Square & 0.9987\\
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+    \caption{U-P关系图(充气)}
+    \label{fig:9}
+\end{figure}
+
+同理，当放气的时候，得到关系如图(\ref*{fig:10}),并由灵敏度
+$S_{deflation}=43.93(V/MPa)$
+\begin{figure}[!hp]
+    \vspace{-10pt}
+    \begin{minipage}{0.65\linewidth}
+        \centering
+        \includegraphics[scale=0.5]{fig/U-P放气.jpg}   
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\linewidth}
+        \begin{center}
+            \begin{tabular}{c|c}
+                \hline
+                Model & Line\\
+                \hline
+                Equation & $y=A+B*x$\\
+                \hline
+                A(Intercept) & 0.3106\\
+                \hline
+                B(Slape) & 43.9347\\
+                \hline
+                R-Square & 0.9971\\
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+    \caption{U-P关系图(放气)}
+    \label{fig:10}
+\end{figure}
+\newpage
+对上述充气与放气得到的灵敏度取平均得到,$\bar{S}=\frac{S_{inflation}}{S_{deflation}}
+=44.39(V/Mpa)$，
+相较于对灵敏度取平均得到解，更好的做法应该是将放气与充气的点
+一起用origin拟合，直接得到新的拟合曲线，如图({fig:12})所示。
+并直接得到$\bar{S}=43.93(V/MPa)$,与
+\begin{equation}
+    U=U_0+\frac{\Delta U}{\Delta P}P=0.3106+43.93P
+    \label{eqs:13}
+\end{equation}
+\begin{figure}[!hp]
+    \begin{minipage}{0.65\linewidth}
+        \centering
+        \includegraphics[scale=0.5]{fig/U-P.jpg}   
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.3\linewidth}
+        \begin{center}
+            \begin{tabular}{c|c}
+                \hline
+                Model & Line\\
+                \hline
+                Equation & $y=A+B*x$\\
+                \hline
+                A(Intercept) & 0.30492\\
+                \hline
+                B(Slape) & 44.46286\\
+                \hline
+                R-Square & 0.9980\\
+                \hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+    \caption{U-P关系图}
+    \label{fig:12}
+\end{figure}
+
+\subsection*{压阻传感器报警系统}
+    搭建如图(\ref*{fig:13})所示的电路图，并逐渐增加气压，
+记录下蜂鸣器刚开始报警时候的气压$P=0.006MPa$,代入公式(\ref*{eqs:13})
+得$U=0.5742V$。
+\begin{figure}[!hp]
+    \centering
+    \includegraphics[scale=1]{fig/范例图片/传感器_警报器.jpg}
+    \label{fig:13}
+\end{figure}
+
+
+\newpage
+\section{实验结果分析}
+\subsection*{应变力压力传感器}
+\begin{itemize}
+    \item 结果线性度非常好，并且精确度满足理论中的
+            单桥，半桥，全桥的1：2：4倍数关系
+    \item 但不同电路测出的未知砝码质量由一定误差，
+            可能是导线电阻或接口处的电阻影响
+\end{itemize}
+\subsection*{压阻传感器}
+    \begin{itemize}
+        \item 结果满足线性的规律，并且充气和放气时候的灵敏度相差不大
+        \item 但警报器读出的导通电压和直接测量的导通电压相差极大，可能原因如下
+        \begin{enumerate}
+            \item 警报时候气压太小，气压计测量不精确
+            \item 产生警报速度太快，难以快速反应，导致误差
+            \item 直接测量三极管时测错了(但测量时测过好几遍，多次结果相差不大)
+        \end{enumerate}
+    \end{itemize}
+
+\section{思考题}
+\subsection*{应变片压力传感器}
+    \begin{enumerate}
+        \item 注意如下
+        \begin{itemize}
+            \item 应变片拉伸与收缩方向要与电路图中一致，不然无法正常工作
+            \item 由于电路比较复杂，不要发生断路，短路等基本电路故障
+            \item 尽量少的调用多个导线的接口，因为接口处的电阻相比电线内电阻相当大，容易引起较大误差
+        \end{itemize}
+        \item 基本相同，详细分析请见上文中的"实验结果分析"
+    \end{enumerate}
+\subsection*{压阻传感器}
+    \begin{enumerate}
+        \item 压阻效应就是半导体板电阻受其承受的应力变化而变化，引起电阻变化从而导致电路中的性质发生变化，满足公式
+        \begin{equation*}
+            \frac{\Delta R}{R}\approx\frac{\Delta \rho}{\rho}=K\sigma
+        \end{equation*}
+            $\sigma$为材料承受的应力
+        \item 其异同如下
+        \begin{itemize}
+            \item 压阻传感器与其上收到的压力成一定关系
+            \item 电阻应变片与其伸长还是压缩成一定关系
+        \end{itemize}
+            两者都与其受力情况有关，但引起电阻改变的原因不同
+    \end{enumerate}
+
+\label{lastpage}
+\end{document}
